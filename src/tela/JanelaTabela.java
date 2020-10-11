@@ -24,6 +24,7 @@ public class JanelaTabela extends Janela {
 	private JButton btEditar=new JButton("Editar");
 	private JButton btExcluir=new JButton("Excluir");
 	private JButton btSair=new JButton("Sair");
+	private JButton btAtualizar=new JButton("Atualizar");
 	private JScrollPane scroller;
 	private JTable tabela=new JTable();
 	
@@ -38,11 +39,13 @@ public class JanelaTabela extends Janela {
 		excluir(); 
 		novo();
 		editar();
+		atualizar();
 	}
 	
 	public JPanel configurarPainelBotoes() {
 		jpBotoes=new JPanel(new FlowLayout());
 		jpBotoes.add(btSair);
+		jpBotoes.add(btAtualizar);
 		jpBotoes.add(btExcluir);
 		jpBotoes.add(btEditar);
 		jpBotoes.add(btNovo);
@@ -78,7 +81,9 @@ public class JanelaTabela extends Janela {
 	
 	protected void atualizarTabela() {
 		this.dao.atualizaDados(this.dados);
-		
+		this.mTContato=new ModeloTabelaContato(this.dao);
+		this.tabela.setModel(mTContato);
+		this.scroller=new JScrollPane(this.tabela);
 		tabela.revalidate();
 	}
 	
@@ -87,7 +92,6 @@ public class JanelaTabela extends Janela {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JanelaNovo jn=new JanelaNovo(dados);
-				atualizarTabela();
 			}
 		});
 	}
@@ -101,7 +105,7 @@ public class JanelaTabela extends Janela {
 						int row=tabela.getSelectedRow();
 						try {
 							new JanelaEdicao(dao, row, dados);
-							atualizarTabela();
+							
 						}catch(Exception e2) {
 							JOptionPane.showMessageDialog(
 									null, 
@@ -176,4 +180,15 @@ public class JanelaTabela extends Janela {
 		});
 	}
 
+	public void atualizar() {
+		btAtualizar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				painel.removeAll();
+				atualizarTabela();
+				configuraJanela();
+			}
+		});
+	}
 }
