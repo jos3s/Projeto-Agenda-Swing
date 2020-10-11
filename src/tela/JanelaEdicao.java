@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -86,6 +87,10 @@ public class JanelaEdicao extends Janela {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				editar();
+				JOptionPane.showMessageDialog(null,
+						"Clique no botão 'Atualizar' para ver a alteração",
+						"Informação",
+						JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}
 		});

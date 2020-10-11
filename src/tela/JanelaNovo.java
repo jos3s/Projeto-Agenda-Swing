@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -78,6 +79,10 @@ public class JanelaNovo extends Janela {
 			public void actionPerformed(ActionEvent e) {
 				String txt=jtfNome.getText()+" | "+jtfTelefone.getText();
 				dados.escrever(txt);
+				JOptionPane.showMessageDialog(null,
+						"Clique no botão 'Atualizar' para ver a alteração",
+						"Informação",
+						JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}
 		});
