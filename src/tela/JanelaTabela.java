@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import entidades.Contato;
 import entidades.Contatos;
 import entidades.Dados;
 import modelo.ModeloTabelaContato;
@@ -33,7 +32,11 @@ public class JanelaTabela extends Janela {
 	private ModeloTabelaContato mTContato=new ModeloTabelaContato(dao);
 	
 	public JanelaTabela() {
-		setTitle("Agenda");
+		renderizaJanela();
+	}
+	
+	@Override
+	protected void renderizaJanela() {
 		configuraJanela();
 		sair();
 		excluir(); 
@@ -42,7 +45,7 @@ public class JanelaTabela extends Janela {
 		atualizar();
 	}
 	
-	public JPanel configurarPainelBotoes() {
+	protected JPanel configurarPainelBotoes() {
 		jpBotoes=new JPanel(new FlowLayout());
 		jpBotoes.add(btSair);
 		jpBotoes.add(btAtualizar);
@@ -63,20 +66,30 @@ public class JanelaTabela extends Janela {
 	@Override
 	protected void configuraJanela() {
 		add(configuraPainel());
-		setSize(500,300);
+		setTitle("Agenda");
+		setSize(500,525);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
-	@Override
-	protected void renderizaJanela() {
-	}
-	
-	public JScrollPane renderizaTabela() {
+	protected JScrollPane renderizaTabela() {
 		this.tabela.setModel(this.mTContato);
 		scroller = new JScrollPane(this.tabela);
 		return scroller;
+	}
+	
+	@Override
+	public void exibirMensagem(String msg, String titulo, int opc) {
+		switch(opc) {
+			case 1:
+				JOptionPane.showMessageDialog(null,msg,titulo,JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case 2:
+				JOptionPane.showMessageDialog(null,msg,titulo,JOptionPane.ERROR_MESSAGE);
+				break;
+		}
+		
 	}
 	
 	protected void atualizarTabela() {
@@ -91,7 +104,7 @@ public class JanelaTabela extends Janela {
 		btNovo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JanelaNovo jn=new JanelaNovo(dados);
+				new JanelaNovo(dados);
 			}
 		});
 	}
@@ -107,25 +120,13 @@ public class JanelaTabela extends Janela {
 							new JanelaEdicao(dao, row, dados);
 							
 						}catch(Exception e2) {
-							JOptionPane.showMessageDialog(
-									null, 
-									"Você precisa selecionar uma linha ou coluna da tabela", 
-									"Erro de validação", 
-									JOptionPane.ERROR_MESSAGE);
+							exibirMensagem("Você precisa selecionar uma linha ou coluna da tabela","Erro de validação", 2);
 						}
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(
-								null, 
-								"Você precisa selecionar uma linha ou coluna da tabela", 
-								"Erro de validação", 
-								JOptionPane.ERROR_MESSAGE);
+						exibirMensagem("Você precisa selecionar uma linha ou coluna da tabela", "Erro de validação",2);
 					} 
 				}else {
-					JOptionPane.showMessageDialog(
-							null, 
-							"Não é possivel editar, pois não há mais linha na tabela", 
-							"Edição", 
-							JOptionPane.INFORMATION_MESSAGE);
+					exibirMensagem("Não é possivel editar, pois não há mais linha na tabela","Edição",1);
 				}	
 				
 			}
@@ -139,32 +140,22 @@ public class JanelaTabela extends Janela {
 			public void actionPerformed(ActionEvent e) {
 				int row=tabela.getSelectedRow();
 				if(row>-1) {
-					try {
-						int opc=JOptionPane.showConfirmDialog(
-									null,
-									"Deseja realmente excluir? ",
-									"Exclusão",
-									1,
-									JOptionPane.WARNING_MESSAGE);
-						if(opc==0) {
-							dao.remove(row);
-							tabela.revalidate();
-							dados.sobrescrever(dao.getContatos());
-						}
-						tabela.clearSelection();
-					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(
-								null, 
-								"Você precisa selecionar uma linha ou coluna da tabela", 
-								"Erro de validação", 
-								JOptionPane.ERROR_MESSAGE);
+					int opc=JOptionPane.showConfirmDialog(
+								null,
+								"Deseja realmente excluir? ",
+								"Exclusão",
+								1,
+								JOptionPane.WARNING_MESSAGE);
+					if(opc==0) {
+						dao.remove(row);
+						tabela.revalidate();
+						dados.sobrescrever(dao.getContatos());						
 					}
+					tabela.clearSelection();
+				}else if(tabela.getRowCount()>0) {
+					exibirMensagem("Você precisa selecionar uma linha da tabela", "Erro de validação",2);
 				}else {
-					JOptionPane.showMessageDialog(
-							null, 
-							"Você precisa selecionar uma linha ou coluna da tabela", 
-							"Erro de validação", 
-							JOptionPane.ERROR_MESSAGE);
+					exibirMensagem("Não há mais linha na tabela", "Erro de validação",2);
 				}
 				
 			}
@@ -181,8 +172,7 @@ public class JanelaTabela extends Janela {
 	}
 
 	public void atualizar() {
-		btAtualizar.addActionListener(new ActionListener() {
-			
+		btAtualizar.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				painel.removeAll();
@@ -191,4 +181,5 @@ public class JanelaTabela extends Janela {
 			}
 		});
 	}
+
 }
