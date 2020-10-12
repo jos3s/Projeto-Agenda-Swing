@@ -24,7 +24,7 @@ public class JanelaEdicao extends Janela {
 	private JLabel jlNome= new JLabel("Nome: ");
 	private JLabel jlTelefone= new JLabel("Email: ");
 	private JTextField jtfNome= new JTextField(15);
-	private JTextField jftEmail= new JTextField(15);
+	private JTextField jtfEmail= new JTextField(15);
 	private JButton btSalvar= new JButton("Salvar");
 	private JButton btCancelar=new JButton("Cancelar");
 	
@@ -57,7 +57,7 @@ public class JanelaEdicao extends Janela {
 		jpNome.add(jtfNome);
 		jpTelefone.setLayout(new FlowLayout());
 		jpTelefone.add(jlTelefone);
-		jpTelefone.add(jftEmail);
+		jpTelefone.add(jtfEmail);
 		jpBotoes.setLayout(new FlowLayout());
 		jpBotoes.add(btCancelar);
 		jpBotoes.add(btSalvar);
@@ -80,7 +80,7 @@ public class JanelaEdicao extends Janela {
 
 	protected void preencheCampos() {
 		jtfNome.setText(cont.getNome());
-		jftEmail.setText(cont.getEmail());
+		jtfEmail.setText(!jtfEmail.getText().trim().isEmpty() ? cont.getEmail() : "");
 	}
 	
 	public void salvar() {
@@ -103,15 +103,20 @@ public class JanelaEdicao extends Janela {
 	}
 
 	public void editar() {
-		if(!jtfNome.getText().trim().isEmpty() && !jftEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jftEmail.getText())){
-			contatos.atualizarContato(index, jtfNome.getText(), jftEmail.getText());
+		System.out.println(jtfEmail.getText());
+		System.out.println(Contato.eUmEmailValido(jtfEmail.getText()));
+		if(!jtfNome.getText().trim().isEmpty() && !jtfEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jtfEmail.getText())){
+			contatos.atualizarContato(index, jtfNome.getText(), jtfEmail.getText());
 			dados.sobrescrever(contatos.getContatos());
 			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
 			dispose();
 		}else if(jtfNome.getText().trim().isEmpty()){
 			exibirMensagem("O campo 'Nome' não pode estar vazio","Erro no preenchimento dos dados",2);
-		}else{
-			exibirMensagem("O email fornecido não é válido","Erro no preenchimento dos dados",2);
+		}else if(!jtfNome.getText().trim().isEmpty() && jtfEmail.getText().trim().isEmpty()){
+			contatos.atualizarContato(index, jtfNome.getText(), " ");
+			dados.sobrescrever(contatos.getContatos());
+			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
+			dispose();
 		}
 	}
 

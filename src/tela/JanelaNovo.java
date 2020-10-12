@@ -23,7 +23,7 @@ public class JanelaNovo extends Janela {
 	private JLabel jlNome= new JLabel("Nome: ");
 	private JLabel jlEmail= new JLabel("Email: ");
 	private JTextField jtfNome= new JTextField(15);
-	private JTextField jftEmail= new JTextField(15);
+	private JTextField jtfEmail= new JTextField(15);
 	private JButton btSalvar= new JButton("Salvar");
 	private JButton btCancelar=new JButton("Cancelar");
 	
@@ -47,7 +47,7 @@ public class JanelaNovo extends Janela {
 		jpNome.add(jtfNome);
 		jpTelefone.setLayout(new FlowLayout());
 		jpTelefone.add(jlEmail);
-		jpTelefone.add(jftEmail);
+		jpTelefone.add(jtfEmail);
 		jpBotoes.setLayout(new FlowLayout());
 		jpBotoes.add(btCancelar);
 		jpBotoes.add(btSalvar);
@@ -91,15 +91,18 @@ public class JanelaNovo extends Janela {
 	}
 	
 	private void salvarArq() {
-		if(!jtfNome.getText().trim().isEmpty() && !jftEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jftEmail.getText())){
-			String txt=jtfNome.getText()+"; "+jftEmail.getText();
-			dados.escrever(txt);
+		if(!jtfNome.getText().trim().isEmpty() && !jtfEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jtfEmail.getText())){
+			String txt=jtfNome.getText()+"; "+jtfEmail.getText();
+			dados.escreve(txt);
 			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
 			dispose();
 		}else if(jtfNome.getText().trim().isEmpty()){
 			exibirMensagem("O campo 'Nome' não pode estar vazio", "Erro no preenchimento dos dados",2);
-		}else{
-			exibirMensagem("O email fornecido não é válido", "Erro no preenchimento dos dados",2);
+		}else if(!jtfNome.getText().trim().isEmpty() && jtfEmail.getText().trim().isEmpty()){
+			String txt=jtfNome.getText()+"; ";
+			dados.escreve(txt);
+			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
+			dispose();
 		}
 	}
 	

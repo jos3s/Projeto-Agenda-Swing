@@ -47,7 +47,7 @@ public class Dados {
 	 }*/
 	 
 	 @SuppressWarnings("resource")
-	 public void escrever(String txt) {		
+	 public void escreve(String txt) {		
 		 try {
 			 this.br = new BufferedReader(new FileReader(fileName));
 			 StringBuilder sb = new StringBuilder(); 
