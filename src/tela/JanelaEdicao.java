@@ -22,9 +22,9 @@ public class JanelaEdicao extends Janela {
 	private JPanel jpTelefone=new JPanel();
 	private JPanel jpBotoes=new JPanel();
 	private JLabel jlNome= new JLabel("Nome: ");
-	private JLabel jlTelefone= new JLabel("Telefone: ");
+	private JLabel jlTelefone= new JLabel("Email: ");
 	private JTextField jtfNome= new JTextField(15);
-	private JTextField jtfTelefone= new JTextField(15);
+	private JTextField jftEmail= new JTextField(15);
 	private JButton btSalvar= new JButton("Salvar");
 	private JButton btCancelar=new JButton("Cancelar");
 	
@@ -39,11 +39,15 @@ public class JanelaEdicao extends Janela {
 		this.index=index;
 		this.dados=dd;
 		this.cont=contatos.getContato(index);
+		renderizaJanela();
+	}
+	
+	@Override
+	protected void renderizaJanela() {
 		configuraJanela();
 		cancelar();
 		salvar();
 	}
-	
 
 	@Override
 	protected JPanel configuraPainel() {
@@ -53,7 +57,7 @@ public class JanelaEdicao extends Janela {
 		jpNome.add(jtfNome);
 		jpTelefone.setLayout(new FlowLayout());
 		jpTelefone.add(jlTelefone);
-		jpTelefone.add(jtfTelefone);
+		jpTelefone.add(jftEmail);
 		jpBotoes.setLayout(new FlowLayout());
 		jpBotoes.add(btCancelar);
 		jpBotoes.add(btSalvar);
@@ -76,22 +80,14 @@ public class JanelaEdicao extends Janela {
 
 	protected void preencheCampos() {
 		jtfNome.setText(cont.getNome());
-		jtfTelefone.setText(cont.getTelefone());
+		jftEmail.setText(cont.getEmail());
 	}
-
-	@Override
-	protected void renderizaJanela() {}
 	
 	public void salvar() {
 		btSalvar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				editar();
-				JOptionPane.showMessageDialog(null,
-						"Clique no botão 'Atualizar' para ver a alteração",
-						"Informação",
-						JOptionPane.INFORMATION_MESSAGE);
-				dispose();
 			}
 		});
 		
@@ -107,8 +103,28 @@ public class JanelaEdicao extends Janela {
 	}
 
 	public void editar() {
-		contatos.atualizarContato(index, jtfNome.getText(), jtfTelefone.getText());
-		dados.sobrescrever(contatos.getContatos());
+		if(!jtfNome.getText().trim().isEmpty() && !jftEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jftEmail.getText())){
+			contatos.atualizarContato(index, jtfNome.getText(), jftEmail.getText());
+			dados.sobrescrever(contatos.getContatos());
+			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
+			dispose();
+		}else if(jtfNome.getText().trim().isEmpty()){
+			exibirMensagem("O campo 'Nome' não pode estar vazio","Erro no preenchimento dos dados",2);
+		}else{
+			exibirMensagem("O email fornecido não é válido","Erro no preenchimento dos dados",2);
+		}
+	}
+
+	public void exibirMensagem(String msg, String titulo, int opc) {
+		switch(opc) {
+			case 1:
+				JOptionPane.showMessageDialog(null,msg,titulo,JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case 2:
+				JOptionPane.showMessageDialog(null,msg,titulo,JOptionPane.ERROR_MESSAGE);
+				break;
+		}
+		
 	}
 
 }
