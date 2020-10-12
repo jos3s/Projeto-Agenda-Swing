@@ -7,8 +7,9 @@ import javax.swing.JPanel;
 public abstract class Janela extends JFrame {
 	 protected JPanel painel=new JPanel();
 	 
+	 protected abstract void renderizaJanela();
 	 protected abstract JPanel configuraPainel();
 	 protected abstract void configuraJanela();
-	 protected abstract void renderizaJanela();
+	 protected abstract void exibirMensagem(String msg, String titulo, int opc);
 	 
 }
