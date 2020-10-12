@@ -15,7 +15,7 @@ public class ModeloTabelaContato extends AbstractTableModel  {
 	private List<String> colunas;
 	
 	public ModeloTabelaContato(Contatos dao) {
-		this.colunas=Arrays.asList("Nome","Telefone");
+		this.colunas=Arrays.asList("Nome","Email");
 		this.contatos=dao.getContatos();
 	}
 
@@ -39,7 +39,7 @@ public class ModeloTabelaContato extends AbstractTableModel  {
 		if(indexColuna==0) {
 			return contato.getNome();
 		}else {
-			return contato.getTelefone();
+			return contato.getEmail();
 		}
 	}
 
