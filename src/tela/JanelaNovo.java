@@ -21,20 +21,21 @@ public class JanelaNovo extends Janela {
 	private JPanel jpTelefone=new JPanel();
 	private JPanel jpBotoes=new JPanel();
 	private JLabel jlNome= new JLabel("Nome: ");
-	private JLabel jlTelefone= new JLabel("Telefone: ");
+	private JLabel jlEmail= new JLabel("Email: ");
 	private JTextField jtfNome= new JTextField(15);
-	private JTextField jtfTelefone= new JTextField(15);
+	private JTextField jftEmail= new JTextField(15);
 	private JButton btSalvar= new JButton("Salvar");
 	private JButton btCancelar=new JButton("Cancelar");
 	
 	private Dados dados;
-	//public JanelaEdicao() {}
-	public JanelaNovo() {
-		renderizaJanela();
-	}
+
 	public JanelaNovo(Dados dados) {
 		this.dados=dados;
 		renderizaJanela();
+	}
+	
+	protected void renderizaJanela() {
+		configuraJanela();
 		cancelar();
 		salvar();
 	}
@@ -45,8 +46,8 @@ public class JanelaNovo extends Janela {
 		jpNome.add(jlNome);
 		jpNome.add(jtfNome);
 		jpTelefone.setLayout(new FlowLayout());
-		jpTelefone.add(jlTelefone);
-		jpTelefone.add(jtfTelefone);
+		jpTelefone.add(jlEmail);
+		jpTelefone.add(jftEmail);
 		jpBotoes.setLayout(new FlowLayout());
 		jpBotoes.add(btCancelar);
 		jpBotoes.add(btSalvar);
@@ -68,24 +69,38 @@ public class JanelaNovo extends Janela {
 	}
 
 	@Override
-	protected void renderizaJanela() {
-		configuraJanela();
-		cancelar();
+	protected void exibirMensagem(String msg, String titulo, int opc) {
+		switch(opc) {
+			case 1:
+				JOptionPane.showMessageDialog(null,msg,titulo,JOptionPane.INFORMATION_MESSAGE);
+				break;
+			case 2:
+				JOptionPane.showMessageDialog(null,msg,titulo,JOptionPane.ERROR_MESSAGE);
+				break;
+		}
+		
 	}
 	
 	protected void salvar() {
 		btSalvar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String txt=jtfNome.getText()+" | "+jtfTelefone.getText();
-				dados.escrever(txt);
-				JOptionPane.showMessageDialog(null,
-						"Clique no botão 'Atualizar' para ver a alteração",
-						"Informação",
-						JOptionPane.INFORMATION_MESSAGE);
-				dispose();
+				salvarArq();
 			}
 		});
+	}
+	
+	private void salvarArq() {
+		if(!jtfNome.getText().trim().isEmpty() && !jftEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jftEmail.getText())){
+			String txt=jtfNome.getText()+"; "+jftEmail.getText();
+			dados.escrever(txt);
+			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
+			dispose();
+		}else if(jtfNome.getText().trim().isEmpty()){
+			exibirMensagem("O campo 'Nome' não pode estar vazio", "Erro no preenchimento dos dados",2);
+		}else{
+			exibirMensagem("O email fornecido não é válido", "Erro no preenchimento dos dados",2);
+		}
 	}
 	
 	protected void cancelar() {
