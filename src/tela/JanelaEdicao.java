@@ -103,8 +103,6 @@ public class JanelaEdicao extends Janela {
 	}
 
 	public void editar() {
-		System.out.println(jtfEmail.getText());
-		System.out.println(Contato.eUmEmailValido(jtfEmail.getText()));
 		if(!jtfNome.getText().trim().isEmpty() && !jtfEmail.getText().trim().isEmpty() && Contato.eUmEmailValido(jtfEmail.getText())){
 			contatos.atualizarContato(index, jtfNome.getText(), jtfEmail.getText());
 			dados.sobrescrever(contatos.getContatos());
