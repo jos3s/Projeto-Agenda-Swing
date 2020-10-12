@@ -1,13 +1,16 @@
 package entidades;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Contato {
 
-	private String nome, telefone;
+	private String nome, email;
 	
 	public Contato() {}
-	public Contato(String nome, String telefone) {
+	public Contato(String nome, String email) {
 		this.nome=nome;
-		this.telefone=telefone;
+		this.email=email;
 	}
 	public String getNome() {
 		return nome;
@@ -15,10 +18,23 @@ public class Contato {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public String getTelefone() {
-		return telefone;
+	public String getEmail() {
+		return email;
 	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public static boolean eUmEmailValido(String email) {
+	    boolean eUmEmailValido = false;
+	    if (email != null && email.length() > 0) {
+	        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+	        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+	        Matcher matcher = pattern.matcher(email);
+	        if (matcher.matches()) {
+	        	eUmEmailValido = true;
+	        }
+	    }
+	    return eUmEmailValido;
 	}
 }

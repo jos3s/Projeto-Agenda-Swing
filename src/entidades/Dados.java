@@ -93,12 +93,14 @@ public class Dados {
 		 }
 		 ArrayList<Contato> dados=new ArrayList<Contato>();
 		 for(String s:linhas) {
-			 String [] linhasDivididas=s.split(" | ");
-			 String linha = "";
-			 for(int i=0;i<linhasDivididas.length -2;i++) {
-				linha=linha+linhasDivididas[i]+" "; 
+			 String [] linhasDivididas=s.split(";\\s");
+			 Contato c;
+			 if(linhasDivididas.length>1) {
+				 c=new Contato(linhasDivididas[0],linhasDivididas[1]);
+			 }else {
+				 c=new Contato(linhasDivididas[0]," ");
 			 }
-			 Contato c=new Contato(linha,linhasDivididas[linhasDivididas.length-1]);
+			 
 			 dados.add(c);
 		 }
 		 try {
@@ -113,7 +115,7 @@ public class Dados {
 	 public void sobrescrever(List<Contato> list) {
 	     StringBuilder sb = new StringBuilder(); 
 	     for(Contato c: list){ 
-	    	 sb.append(c.getNome() + " | "+c.getTelefone()+"\r\n");
+	    	 sb.append(c.getNome() + "; "+c.getEmail()+"\r\n");
 		 }
 	     sb.append("");
 		 try {

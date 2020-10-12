@@ -44,8 +44,8 @@ public class Contatos {
 		 this.contatos=dd.ler();
 	 }
 	
-	 public void atualizarContato(int index,String nome, String tel) {
+	 public void atualizarContato(int index,String nome, String email) {
 		 this.contatos.get(index).setNome(nome);
-		 this.contatos.get(index).setTelefone(tel);
+		 this.contatos.get(index).setEmail(email);
 	 }
 }
