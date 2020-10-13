@@ -43,7 +43,7 @@ public class ModeloTabelaContato extends AbstractTableModel  {
 		}
 	}
 
-	public boolean isCellEditable(int linha, int coluna) {
+	/*public boolean isCellEditable(int linha, int coluna) {
 		return true;
-	}
+	}*/
 }
