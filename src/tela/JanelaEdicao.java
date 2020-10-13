@@ -19,10 +19,10 @@ import entidades.Dados;
 public class JanelaEdicao extends Janela {
 
 	private JPanel jpNome=new JPanel();
-	private JPanel jpTelefone=new JPanel();
+	private JPanel jpEmail=new JPanel();
 	private JPanel jpBotoes=new JPanel();
 	private JLabel jlNome= new JLabel("Nome: ");
-	private JLabel jlTelefone= new JLabel("Email: ");
+	private JLabel jlEmail= new JLabel("Email: ");
 	private JTextField jtfNome= new JTextField(15);
 	private JTextField jtfEmail= new JTextField(15);
 	private JButton btSalvar= new JButton("Salvar");
@@ -55,16 +55,16 @@ public class JanelaEdicao extends Janela {
 		jpNome.setLayout(new FlowLayout());
 		jpNome.add(jlNome);
 		jpNome.add(jtfNome);
-		jpTelefone.setLayout(new FlowLayout());
-		jpTelefone.add(jlTelefone);
-		jpTelefone.add(jtfEmail);
+		jpEmail.setLayout(new FlowLayout());
+		jpEmail.add(jlEmail);
+		jpEmail.add(jtfEmail);
 		jpBotoes.setLayout(new FlowLayout());
 		jpBotoes.add(btCancelar);
 		jpBotoes.add(btSalvar);
 
 		painel.setLayout(new FlowLayout());
 		painel.add(jpNome);
-		painel.add(jpTelefone);
+		painel.add(jpEmail);
 		painel.add(jpBotoes);
 		return painel;
 	}
@@ -72,6 +72,7 @@ public class JanelaEdicao extends Janela {
 	@Override
 	protected void configuraJanela() {
 		add(configuraPainel());
+		setTitle("Edição Contato");
 		setSize(500,150);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -80,7 +81,7 @@ public class JanelaEdicao extends Janela {
 
 	protected void preencheCampos() {
 		jtfNome.setText(cont.getNome());
-		jtfEmail.setText(!jtfEmail.getText().trim().isEmpty() ? cont.getEmail() : "");
+		jtfEmail.setText(cont.getEmail().trim().isEmpty() ? "": cont.getEmail());
 	}
 	
 	public void salvar() {
@@ -115,6 +116,8 @@ public class JanelaEdicao extends Janela {
 			dados.sobrescrever(contatos.getContatos());
 			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
 			dispose();
+		}else if(!jtfNome.getText().trim().isEmpty() && !jtfEmail.getText().trim().isEmpty() && !Contato.eUmEmailValido(jtfEmail.getText())) {
+			exibirMensagem("O email fornecido não é um email válido", "Erro no preenchimento dos dados",2);
 		}
 	}
 

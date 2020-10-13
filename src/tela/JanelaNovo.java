@@ -18,7 +18,7 @@ import entidades.Dados;
 public class JanelaNovo extends Janela {
 
 	private JPanel jpNome=new JPanel();
-	private JPanel jpTelefone=new JPanel();
+	private JPanel jpEmail=new JPanel();
 	private JPanel jpBotoes=new JPanel();
 	private JLabel jlNome= new JLabel("Nome: ");
 	private JLabel jlEmail= new JLabel("Email: ");
@@ -45,16 +45,16 @@ public class JanelaNovo extends Janela {
 		jpNome.setLayout(new FlowLayout());
 		jpNome.add(jlNome);
 		jpNome.add(jtfNome);
-		jpTelefone.setLayout(new FlowLayout());
-		jpTelefone.add(jlEmail);
-		jpTelefone.add(jtfEmail);
+		jpEmail.setLayout(new FlowLayout());
+		jpEmail.add(jlEmail);
+		jpEmail.add(jtfEmail);
 		jpBotoes.setLayout(new FlowLayout());
 		jpBotoes.add(btCancelar);
 		jpBotoes.add(btSalvar);
 		
 		painel.setLayout(new FlowLayout());
 		painel.add(jpNome);
-		painel.add(jpTelefone);
+		painel.add(jpEmail);
 		painel.add(jpBotoes);
 		return painel;
 	}
@@ -63,6 +63,7 @@ public class JanelaNovo extends Janela {
 	protected void configuraJanela() {
 		add(configuraPainel());
 		setSize(500,150);
+		setTitle("Novo Contato");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -103,6 +104,8 @@ public class JanelaNovo extends Janela {
 			dados.escreve(txt);
 			exibirMensagem("Clique no botão 'Atualizar' para ver a alteração","Informação",1);
 			dispose();
+		}else if(!jtfNome.getText().trim().isEmpty() && !jtfEmail.getText().trim().isEmpty() && !Contato.eUmEmailValido(jtfEmail.getText())) {
+			exibirMensagem("O email fornecido não é um email válido", "Erro no preenchimento dos dados",2);
 		}
 	}
 	
